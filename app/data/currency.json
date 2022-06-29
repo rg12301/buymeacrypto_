@@ -1,5 +1,0 @@
-{
-    "polygon": { "name": "Polygon Matic", "symbol": "MATIC" },
-    "usdc": { "name": "USDC", "symbol": "USDC" },
-    "usdt": { "name": "USDT", "symbol": "USDT" }
-}

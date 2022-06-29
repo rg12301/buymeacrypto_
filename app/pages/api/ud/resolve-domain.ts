@@ -1,6 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
-import { UDResponseResolved } from "../../../utils/types";
+import { UDResponse, UDResponseResolved } from "../../../utils/types";
 import { asUDResponseResolved } from "../../../utils/type_functions";
 
 export default async function handler(
@@ -16,10 +16,14 @@ export default async function handler(
                     Authorization: `Bearer ${process.env.ALCHEMY_API_KEY}`,
                 },
             });
-            const ud_response = await response.json();
-            const ud_resolved_response = asUDResponseResolved(ud_response);
-            res.status(200).json(ud_resolved_response);
-            return;
+            const ud_response = (await response.json()) as UDResponse;
+            if (ud_response.meta.owner) {
+                const ud_resolved_response = asUDResponseResolved(ud_response);
+                res.status(200).json(ud_resolved_response);
+                return;
+            } else {
+                res.status(404).send(null);
+            }
         } catch (error) {
             res.status(500).send(null);
         }
