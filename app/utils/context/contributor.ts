@@ -4,10 +4,10 @@ import { Contributor } from "../types";
 
 const ContributorContext = createContext<{
     contributor: Contributor | null;
-    handleUpdateSigner: (signer_: ethers.Signer | null) => void;
+    handleUpdateSigner: (signer_: ethers.Signer | null) => Promise<void>;
 }>({
     contributor: null,
-    handleUpdateSigner: () => {},
+    handleUpdateSigner: async () => {},
 });
 
 export function useContributorContext() {

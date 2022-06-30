@@ -49,17 +49,20 @@ export type Creator = {
     linkedin?: string;
 };
 
-export enum Currencies {
-    POLYGON = "polygon",
-    USDT = "usdt",
-    USDC = "usdc",
-    ETH = "ether",
+export enum CommonCurrencies {
+    USDT = "USDT",
+    USDC = "USDC",
+}
+
+export enum NativeCurrencies {
+    MATIC = "MATIC",
+    ETH = "ETH",
 }
 
 export enum Chains {
-    ETHEREUM = "1",
-    POLYGON = "137",
-    MUMBAI = "80001",
+    ETHEREUM = 1,
+    POLYGON = 137,
+    MUMBAI = 80001,
 }
 
 export type Currency = {
@@ -67,30 +70,83 @@ export type Currency = {
     symbol: string;
     contractAddress: string;
     logo: string;
+    balance: number;
+    quote_rate: number;
 };
 
 export type Network = {
-    [chainId in Chains]: {
-        network: string;
-        networkName: string;
-        tokenName: string;
-        rpcURL: string;
-        blockExplorerURL: string;
-        currencies: {
-            [currency in Currencies]: Currency;
-        };
-    };
+    chainId: Chains;
+    network: string;
+    networkName: string;
+    tokenName: string;
+    rpcURL: string;
+    blockExplorerURL: string;
 };
+
+export interface Polygon extends Network {
+    currencies: {
+        [currency in CommonCurrencies | NativeCurrencies.MATIC]: Currency;
+    };
+}
+
+export interface Ethereum extends Network {
+    currencies: {
+        [currency in CommonCurrencies | NativeCurrencies.ETH]: Currency;
+    };
+}
+
+export interface Mumbai extends Network {
+    currencies: {
+        [NativeCurrencies.MATIC]: Currency;
+    };
+}
+
+// export type Network =
+//     | {
+//           [Chains.POLYGON]: {
+//               network: string;
+//               networkName: string;
+//               tokenName: string;
+//               rpcURL: string;
+//               blockExplorerURL: string;
+//               currencies: {
+//                   [currency in
+//                       | CommonCurrencies
+//                       | NativeCurrencies.POLYGON]: Currency;
+//               };
+//           };
+//       }
+//     | {
+//           [Chains.ETHEREUM]: {
+//               network: string;
+//               networkName: string;
+//               tokenName: string;
+//               rpcURL: string;
+//               blockExplorerURL: string;
+//               currencies: {
+//                   [currency in
+//                       | CommonCurrencies
+//                       | NativeCurrencies.ETH]: Currency;
+//               };
+//           };
+//       }
+//     | {
+//           [Chains.MUMBAI]: {
+//               network: string;
+//               networkName: string;
+//               tokenName: string;
+//               rpcURL: string;
+//               blockExplorerURL: string;
+//               currencies: {
+//                   [NativeCurrencies.ETH]: Currency;
+//               };
+//           };
+//       };
 
 export type Contributor = {
     accountAddress: string;
     signer: ethers.Signer;
-    chainId: Chains;
-    balances: {
-        [chainId in Chains]: {
-            [currency in Currencies]?: BigInt;
-        };
-    };
+    network: Polygon | Ethereum | Mumbai;
 };
 
 export enum ERCStandards {
@@ -116,14 +172,4 @@ export type Token = {
     quote: number | null; //  2.5275965;
     quote_24h: number | null; //  2.7637303;
     nft_data: null;
-};
-
-export type Cryptocurrency = {
-    contract_decimals: number;
-    contract_name: string;
-    contract_ticker_symbol: string;
-    contract_address: string;
-    supports_erc: ERCStandards[] | null;
-    logo_url: string;
-    balance: string | null;
 };

@@ -5,41 +5,43 @@ const providerOptions = {
     /* See Provider Options Section */
 };
 
-export async function connect(cb: (signer: ethers.Signer | null) => void) {
+export async function connect(
+    cb: (signer: ethers.Signer | null) => Promise<void>
+) {
     const web3Modal = new Web3Modal();
     try {
         const connection = await web3Modal.connect();
         const provider = new ethers.providers.Web3Provider(connection, "any");
 
         // Subscribe to accounts change
-        connection.on("accountsChanged", (accounts: string[]) => {
+        connection.on("accountsChanged", async (accounts: string[]) => {
             console.log(accounts);
             if (accounts.length > 0) {
                 const signer = provider.getSigner();
-                cb(signer);
+                await cb(signer);
             }
         });
 
         // Subscribe to chainId change
-        connection.on("chainChanged", (chainId: number) => {
+        connection.on("chainChanged", async (chainId: number) => {
             console.log(chainId);
             const signer = provider.getSigner();
-            cb(signer);
+            await cb(signer);
         });
 
         // Subscribe to provider connection
-        connection.on("connect", (info: { chainId: number }) => {
+        connection.on("connect", async (info: { chainId: number }) => {
             console.log(info);
             const signer = provider.getSigner();
-            cb(signer);
+            await cb(signer);
         });
 
         // Subscribe to provider disconnection
         connection.on(
             "disconnect",
-            (error: { code: number; message: string }) => {
+            async (error: { code: number; message: string }) => {
                 console.log(error);
-                cb(null);
+                await cb(null);
             }
         );
         return provider.getSigner();

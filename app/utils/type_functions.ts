@@ -1,17 +1,16 @@
 import { ethers } from "ethers";
 import formatURL from "./formatURL";
-import network from "../data/network.json";
 import {
     Chains,
     Contributor,
-    Currencies,
-    Network,
+    Ethereum,
+    Mumbai,
+    Polygon,
     Token,
     UDResponse,
     UDResponseResolved,
 } from "./types";
-
-const network_typed = network as Network;
+import network from "../data/network.json";
 
 export function asUDResponseResolved(res: UDResponse): UDResponseResolved {
     const result: UDResponseResolved = {
@@ -28,89 +27,151 @@ export function asUDResponseResolved(res: UDResponse): UDResponseResolved {
 }
 
 export async function fetchContributorDetails(
-    signer: ethers.Signer
+    signer: ethers.Signer,
+    address_: string,
+    chainId_: number
 ): Promise<Contributor | null> {
-    const chainId = (await signer.getChainId()).toString();
-    if (
-        chainId == Chains.ETHEREUM ||
-        chainId == Chains.POLYGON ||
-        chainId == Chains.MUMBAI
-    ) {
-        const contributor: Contributor = {
-            accountAddress: await signer.getAddress(),
-            chainId: chainId,
-            signer: signer,
-            balances: { "1": {}, "137": {}, "80001": {} },
-        };
-
-        return Promise.all(
-            Object.keys(Chains).map(async (chain, chain_index) => {
-                const result = await fetch(
-                    "/api/covalent-api/fetch-token-balances",
-                    {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify({
-                            address: contributor.accountAddress,
-                            chain_id: Object.values(Chains)[chain_index],
-                        }),
+    if (chainId_) {
+        let contributor: Contributor | null = null;
+        switch (chainId_) {
+            case Chains.ETHEREUM: {
+                let currencies: Ethereum["currencies"];
+                Object.keys(network[Chains.ETHEREUM].currencies).forEach(
+                    (currency) => {
+                        if (
+                            currency == "USDC" ||
+                            currency == "USDT" ||
+                            currency == "ETH"
+                        ) {
+                            currencies = {
+                                ...currencies,
+                                [currency]: {
+                                    ...network[Chains.ETHEREUM].currencies[
+                                        currency
+                                    ],
+                                    balance: 0,
+                                    quote: 0,
+                                },
+                            };
+                            contributor = {
+                                accountAddress: address_,
+                                signer: signer,
+                                network: {
+                                    ...network[Chains.ETHEREUM],
+                                    chainId: chainId_,
+                                    currencies: currencies,
+                                },
+                            };
+                        }
                     }
                 );
-                const tokens: Token[] = (await result.json()).tokens;
-                tokens.map((token) => {
-                    Object.keys(Currencies).map((currency, currency_index) => {
+                break;
+            }
+            case Chains.POLYGON: {
+                let currencies: Polygon["currencies"];
+                Object.keys(network[Chains.POLYGON].currencies).forEach(
+                    (currency) => {
                         if (
-                            network_typed[Object.values(Chains)[chain_index]] &&
-                            network_typed[Object.values(Chains)[chain_index]]
-                                .currencies[
-                                Object.values(Currencies)[currency_index]
-                            ]
+                            currency == "USDC" ||
+                            currency == "USDT" ||
+                            currency == "MATIC"
                         ) {
-                            // console.log(
-                            //     Object.values(Chains)[chain_index],
-                            //     Object.values(Currencies)[currency_index]
-                            // );
-                            if (
-                                token.contract_address ==
-                                    network_typed[
-                                        Object.values(Chains)[chain_index]
-                                    ].currencies[
-                                        Object.values(Currencies)[
-                                            currency_index
-                                        ]
-                                    ].contractAddress ||
-                                token.contract_ticker_symbol ==
-                                    network_typed[
-                                        Object.values(Chains)[chain_index]
-                                    ].currencies[
-                                        Object.values(Currencies)[
-                                            currency_index
-                                        ]
-                                    ].symbol
-                            ) {
-                                if (token.balance)
-                                    contributor.balances[
-                                        Object.values(Chains)[chain_index]
-                                    ][
-                                        Object.values(Currencies)[
-                                            currency_index
-                                        ]
-                                    ] = BigInt(token.balance);
-                            }
+                            currencies = {
+                                ...currencies,
+                                [currency]: {
+                                    ...network[Chains.POLYGON].currencies[
+                                        currency
+                                    ],
+                                    balance: 0,
+                                    quote: 0,
+                                },
+                            };
+                            contributor = {
+                                accountAddress: address_,
+                                signer: signer,
+                                network: {
+                                    ...network[Chains.POLYGON],
+                                    chainId: chainId_,
+                                    currencies: currencies,
+                                },
+                            };
                         }
-                    });
-                });
-            })
-        )
-            .then(() => {
-                console.log(contributor);
+                    }
+                );
+                break;
+            }
+            case Chains.MUMBAI: {
+                let currencies: Mumbai["currencies"];
+                Object.keys(network[Chains.MUMBAI].currencies).forEach(
+                    (currency) => {
+                        if (currency == "MATIC") {
+                            currencies = {
+                                ...currencies,
+                                [currency]: {
+                                    ...network[Chains.MUMBAI].currencies[
+                                        currency
+                                    ],
+                                    balance: 0,
+                                    quote_rate: 0,
+                                },
+                            };
+                            contributor = {
+                                accountAddress: address_,
+                                signer: signer,
+                                network: {
+                                    ...network[Chains.MUMBAI],
+                                    chainId: chainId_,
+                                    currencies: currencies,
+                                },
+                            };
+                        }
+                    }
+                );
+                break;
+            }
+            default:
                 return contributor;
-            })
-            .catch(() => {
-                return null;
-            });
+        }
+        if (contributor)
+            contributor = await updateContributorBalances(contributor);
+        return contributor;
     }
     return null;
+}
+
+export async function updateContributorBalances(contributor: Contributor) {
+    const result = await fetch("/api/covalent-api/fetch-token-balances", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            address: contributor.accountAddress,
+            chain_id: contributor.network.chainId,
+        }),
+    });
+
+    const tokens: Token[] = (await result.json()).tokens;
+    for (const token of tokens) {
+        Object.values(contributor.network.currencies).forEach(
+            (currency, index) => {
+                if (
+                    currency.contractAddress == token.contract_address ||
+                    currency.symbol == token.contract_ticker_symbol
+                ) {
+                    contributor.network.currencies = {
+                        ...contributor.network.currencies,
+                        [Object.keys(contributor.network.currencies)[index]]: {
+                            ...currency,
+                            balance: ethers.utils.formatUnits(
+                                token.balance ? token.balance : 0
+                            ),
+                            quote_rate: token.quote_rate,
+                        },
+                    };
+                }
+            }
+        );
+    }
+    return contributor;
 }

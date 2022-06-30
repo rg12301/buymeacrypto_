@@ -6,7 +6,7 @@
         "rpcURL": "https://matic-mumbai.chainstacklabs.com/",
         "blockExplorerURL": "https://mumbai.polygonscan.com/",
         "currencies": {
-            "polygon": {
+            "MATIC": {
                 "name": "Test Polygon Matic",
                 "symbol": "MATIC",
                 "contractAddress": "native",
@@ -21,19 +21,19 @@
         "rpcURL": "",
         "blockExplorerURL": "",
         "currencies": {
-            "ether": {
+            "ETH": {
                 "name": "Ether",
                 "symbol": "ETH",
                 "contractAddress": "native",
                 "logo": "/ether.png"
             },
-            "usdc": {
+            "USDC": {
                 "name": "USDC",
                 "symbol": "USDC",
                 "contractAddress": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
                 "logo": "/usdc.svg"
             },
-            "usdt": {
+            "USDT": {
                 "name": "USDT",
                 "symbol": "USDT",
                 "contractAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7",
@@ -48,19 +48,19 @@
         "rpcURL": "https://rpc-mainnet.maticvigil.com/",
         "blockExplorerURL": "https://polygonscan.com/",
         "currencies": {
-            "polygon": {
+            "MATIC": {
                 "name": "Polygon Matic",
                 "symbol": "MATIC",
                 "contractAddress": "native",
                 "logo": "/polygon.svg"
             },
-            "usdc": {
+            "USDC": {
                 "name": "USDC",
                 "symbol": "USDC",
                 "contractAddress": "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
                 "logo": "/usdc.svg"
             },
-            "usdt": {
+            "USDT": {
                 "name": "USDT",
                 "symbol": "USDT",
                 "contractAddress": "0xc2132D05D31c914a87C6611C10748AEb04B58e8F",
