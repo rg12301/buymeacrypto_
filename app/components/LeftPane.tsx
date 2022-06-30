@@ -56,8 +56,14 @@ const LeftPane = () => {
                                             key={coin.contractAddress}
                                         >
                                             <img
-                                                src={coin.logo}
-                                                className="h-5 w-5"
+                                                src={
+                                                    coin.logo
+                                                        ? coin.logo
+                                                        : makeBlockie(
+                                                              coin.contractAddress
+                                                          )
+                                                }
+                                                className="h-5 w-5 rounded-full"
                                                 alt={coin.name}
                                             />
                                             <span>

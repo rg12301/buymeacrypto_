@@ -209,7 +209,10 @@ const RightPane = ({ router }: Props) => {
                                     </li>
                                 </ul>
                             </div>
-                            <PaymentSection getTotal={getTotal} />
+                            <PaymentSection
+                                getTotal={getTotal}
+                                creator={creator}
+                            />
                         </div>
                     </div>
                 </div>

@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import { connect } from "../utils/connectWallet";
 import { useContributorContext } from "../utils/context/contributor";
-import { CommonCurrencies, NativeCurrencies } from "../utils/types";
+import { CommonCurrencies, Creator, NativeCurrencies } from "../utils/types";
 import Quote from "./Quote";
 
 type Props = {
     getTotal: (amount: boolean) => number;
+    creator: Creator;
 };
 
-const PaymentSection = ({ getTotal }: Props) => {
+const PaymentSection = ({ getTotal, creator }: Props) => {
     const { contributor, handleUpdateSigner } = useContributorContext();
 
     const [continuousPayment, setContinuousPayment] = useState(false);
@@ -66,6 +67,7 @@ const PaymentSection = ({ getTotal }: Props) => {
                 payIn={payIn}
                 setPayIn={setPayIn}
                 continuousPayment={continuousPayment}
+                creator={creator}
             />
         </div>
     ) : (

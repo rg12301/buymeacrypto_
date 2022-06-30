@@ -104,7 +104,7 @@ export async function fetchContributorDetails(
                 let currencies: Mumbai["currencies"];
                 Object.keys(network[Chains.MUMBAI].currencies).forEach(
                     (currency) => {
-                        if (currency == "MATIC") {
+                        if (currency == "MATIC" || currency == "MATICx") {
                             currencies = {
                                 ...currencies,
                                 [currency]: {
@@ -173,5 +173,11 @@ export async function updateContributorBalances(contributor: Contributor) {
             }
         );
     }
+    Object.values(contributor.network.currencies).forEach((currency) => {
+        if (currency.super) {
+            contributor.network.currencies[currency.symbol].quote_rate =
+                contributor.network.currencies[currency.super].quote_rate;
+        }
+    });
     return contributor;
 }

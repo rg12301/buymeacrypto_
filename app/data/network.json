@@ -11,6 +11,13 @@
                 "symbol": "MATIC",
                 "contractAddress": "native",
                 "logo": "/polygon.svg"
+            },
+            "MATICx": {
+                "name": "Test Polygon Maticx",
+                "symbol": "MATICx",
+                "contractAddress": "0x96B82B65ACF7072eFEb00502F45757F254c2a0D4",
+                "logo": "",
+                "super": "MATIC"
             }
         }
     },

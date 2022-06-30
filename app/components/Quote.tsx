@@ -1,8 +1,11 @@
+import makeBlockie from "ethereum-blockies-base64";
 import React, { useEffect } from "react";
+import send from "../utils/send";
 import {
     Chains,
     CommonCurrencies,
     Contributor,
+    Creator,
     Currency,
     Ethereum,
     Mumbai,
@@ -16,6 +19,7 @@ type Props = {
     setPayIn: (payIn: CommonCurrencies | NativeCurrencies) => void;
     getTotal: (amount: boolean) => number;
     continuousPayment: boolean;
+    creator: Creator;
 };
 
 const Quote = ({
@@ -24,6 +28,7 @@ const Quote = ({
     setPayIn,
     getTotal,
     continuousPayment,
+    creator,
 }: Props) => {
     const setValidPayIn = (
         chainId: Chains,
@@ -50,7 +55,10 @@ const Quote = ({
                 setPayIn(CommonCurrencies.USDC);
             }
         } else if (chainId == Chains.MUMBAI) {
-            if (currency == NativeCurrencies.MATIC) {
+            if (
+                currency == NativeCurrencies.MATIC ||
+                currency == NativeCurrencies.MATICx
+            ) {
                 setPayIn(currency);
             } else {
                 setPayIn(NativeCurrencies.MATIC);
@@ -61,7 +69,7 @@ const Quote = ({
     const getValidCurrency = (
         contributor: Contributor,
         currency: CommonCurrencies | NativeCurrencies
-    ): Currency | null => {
+    ): Currency<typeof currency> | null => {
         const chainId = contributor.network.chainId;
         if (chainId == Chains.POLYGON) {
             if (
@@ -80,7 +88,10 @@ const Quote = ({
                 return (contributor.network as Ethereum).currencies[currency];
             }
         } else if (chainId == Chains.MUMBAI) {
-            if (currency == NativeCurrencies.MATIC) {
+            if (
+                currency == NativeCurrencies.MATIC ||
+                currency == NativeCurrencies.MATICx
+            ) {
                 return (contributor.network as Mumbai).currencies[currency];
             }
         }
@@ -103,7 +114,7 @@ const Quote = ({
                             return (
                                 <li
                                     key={coin.contractAddress}
-                                    className={`h-10 w-10 cursor-pointer rounded-full transition-transform duration-200 ease-in-out ${
+                                    className={`h-10 w-10 cursor-pointer overflow-hidden rounded-full transition-transform duration-200 ease-in-out ${
                                         payIn == coin.symbol &&
                                         "scale-150 shadow-xl"
                                     }`}
@@ -116,7 +127,16 @@ const Quote = ({
                                         )
                                     }
                                 >
-                                    <img src={coin.logo} alt={coin.name} />
+                                    <img
+                                        src={
+                                            coin.logo
+                                                ? coin.logo
+                                                : makeBlockie(
+                                                      coin.contractAddress
+                                                  )
+                                        }
+                                        alt={coin.name}
+                                    />
                                 </li>
                             );
                         }
@@ -162,7 +182,33 @@ const Quote = ({
                         </span>
                     </p>
                 </div>
-                <button className="group relative mt-5 inline-flex w-full items-center overflow-hidden rounded bg-green-600 px-8 py-3 text-white focus:outline-none focus:ring active:bg-green-500">
+                <button
+                    className="group relative mt-5 inline-flex w-full items-center overflow-hidden rounded bg-green-600 px-8 py-3 text-white focus:outline-none focus:ring active:bg-green-500"
+                    onClick={
+                        continuousPayment
+                            ? () => {}
+                            : () => {
+                                  const contractAddr = getValidCurrency(
+                                      contributor,
+                                      payIn
+                                  )?.contractAddress;
+                                  const amount = (
+                                      getTotal(true) /
+                                      (getValidCurrency(contributor, payIn)
+                                          ?.quote_rate || 1)
+                                  ).toString();
+                                  console.log(contractAddr, amount);
+                                  if (contractAddr && amount) {
+                                      send(
+                                          contributor.signer,
+                                          contractAddr,
+                                          amount,
+                                          creator.wallet
+                                      );
+                                  }
+                              }
+                    }
+                >
                     <span className="absolute right-0 translate-x-full transition-transform group-hover:-translate-x-4">
                         <svg
                             className="h-5 w-5"

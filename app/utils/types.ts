@@ -55,8 +55,9 @@ export enum CommonCurrencies {
 }
 
 export enum NativeCurrencies {
-    MATIC = "MATIC",
     ETH = "ETH",
+    MATICx = "MATICx",
+    MATIC = "MATIC",
 }
 
 export enum Chains {
@@ -65,13 +66,14 @@ export enum Chains {
     MUMBAI = 80001,
 }
 
-export type Currency = {
+export type Currency<T extends NativeCurrencies | CommonCurrencies> = {
     name: string;
-    symbol: string;
+    symbol: T;
     contractAddress: string;
     logo: string;
     balance: number;
     quote_rate: number;
+    super?: T;
 };
 
 export type Network = {
@@ -85,63 +87,27 @@ export type Network = {
 
 export interface Polygon extends Network {
     currencies: {
-        [currency in CommonCurrencies | NativeCurrencies.MATIC]: Currency;
+        [currency in
+            | CommonCurrencies
+            | NativeCurrencies.MATIC]: Currency<currency>;
     };
 }
 
 export interface Ethereum extends Network {
     currencies: {
-        [currency in CommonCurrencies | NativeCurrencies.ETH]: Currency;
+        [currency in
+            | CommonCurrencies
+            | NativeCurrencies.ETH]: Currency<currency>;
     };
 }
 
 export interface Mumbai extends Network {
     currencies: {
-        [NativeCurrencies.MATIC]: Currency;
+        [currency in
+            | NativeCurrencies.MATIC
+            | NativeCurrencies.MATICx]: Currency<currency>;
     };
 }
-
-// export type Network =
-//     | {
-//           [Chains.POLYGON]: {
-//               network: string;
-//               networkName: string;
-//               tokenName: string;
-//               rpcURL: string;
-//               blockExplorerURL: string;
-//               currencies: {
-//                   [currency in
-//                       | CommonCurrencies
-//                       | NativeCurrencies.POLYGON]: Currency;
-//               };
-//           };
-//       }
-//     | {
-//           [Chains.ETHEREUM]: {
-//               network: string;
-//               networkName: string;
-//               tokenName: string;
-//               rpcURL: string;
-//               blockExplorerURL: string;
-//               currencies: {
-//                   [currency in
-//                       | CommonCurrencies
-//                       | NativeCurrencies.ETH]: Currency;
-//               };
-//           };
-//       }
-//     | {
-//           [Chains.MUMBAI]: {
-//               network: string;
-//               networkName: string;
-//               tokenName: string;
-//               rpcURL: string;
-//               blockExplorerURL: string;
-//               currencies: {
-//                   [NativeCurrencies.ETH]: Currency;
-//               };
-//           };
-//       };
 
 export type Contributor = {
     accountAddress: string;
