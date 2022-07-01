@@ -49,15 +49,31 @@ export type Creator = {
     linkedin?: string;
 };
 
-export enum CommonCurrencies {
-    USDT = "USDT",
+export enum PolygonCurrencies {
+    MATIC = "MATIC",
     USDC = "USDC",
+    USDT = "USDT",
 }
 
-export enum NativeCurrencies {
-    ETH = "ETH",
+export enum PolygonSuperCurrencies {
     MATICx = "MATICx",
+    USDCx = "USDCx",
+}
+
+export enum EthereumCurrencies {
+    ETH = "ETH",
+    USDC = "USDC",
+    USDT = "USDT",
+}
+
+export enum MumbaiCurrencies {
     MATIC = "MATIC",
+    fUSDC = "fUSDC",
+}
+
+export enum MumbaiSuperCurrencies {
+    MATICx = "MATICx",
+    fUSDCx = "fUSDCx",
 }
 
 export enum Chains {
@@ -66,7 +82,14 @@ export enum Chains {
     MUMBAI = 80001,
 }
 
-export type Currency<T extends NativeCurrencies | CommonCurrencies> = {
+export type Currency<
+    T extends
+        | PolygonCurrencies
+        | PolygonSuperCurrencies
+        | EthereumCurrencies
+        | MumbaiCurrencies
+        | MumbaiSuperCurrencies
+> = {
     name: string;
     symbol: T;
     contractAddress: string;
@@ -88,24 +111,22 @@ export type Network = {
 export interface Polygon extends Network {
     currencies: {
         [currency in
-            | CommonCurrencies
-            | NativeCurrencies.MATIC]: Currency<currency>;
+            | PolygonCurrencies
+            | PolygonSuperCurrencies]: Currency<currency>;
     };
 }
 
 export interface Ethereum extends Network {
     currencies: {
-        [currency in
-            | CommonCurrencies
-            | NativeCurrencies.ETH]: Currency<currency>;
+        [currency in EthereumCurrencies]: Currency<currency>;
     };
 }
 
 export interface Mumbai extends Network {
     currencies: {
         [currency in
-            | NativeCurrencies.MATIC
-            | NativeCurrencies.MATICx]: Currency<currency>;
+            | MumbaiCurrencies
+            | MumbaiSuperCurrencies]: Currency<currency>;
     };
 }
 

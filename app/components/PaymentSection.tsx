@@ -1,21 +1,42 @@
+// libraries
 import React, { useState } from "react";
+
+// utilities
 import { connect } from "../utils/connectWallet";
 import { useContributorContext } from "../utils/context/contributor";
-import { CommonCurrencies, Creator, NativeCurrencies } from "../utils/types";
+import {
+    Creator,
+    EthereumCurrencies,
+    MumbaiCurrencies,
+    MumbaiSuperCurrencies,
+    PolygonCurrencies,
+    PolygonSuperCurrencies,
+} from "../utils/types";
+
+// components
 import Quote from "./Quote";
 
 type Props = {
+    coffee: string;
+    plant: string;
+    book: string;
     getTotal: (amount: boolean) => number;
     creator: Creator;
 };
 
-const PaymentSection = ({ getTotal, creator }: Props) => {
+const PaymentSection = ({ coffee, plant, book, getTotal, creator }: Props) => {
+    // contexts
     const { contributor, handleUpdateSigner } = useContributorContext();
 
+    // states
     const [continuousPayment, setContinuousPayment] = useState(false);
-    const [payIn, setPayIn] = useState<CommonCurrencies | NativeCurrencies>(
-        CommonCurrencies.USDC
-    );
+    const [payIn, setPayIn] = useState<
+        | PolygonCurrencies
+        | PolygonSuperCurrencies
+        | EthereumCurrencies
+        | MumbaiCurrencies
+        | MumbaiSuperCurrencies
+    >(PolygonCurrencies.MATIC);
 
     return contributor ? (
         <div className="flex w-full flex-col justify-center gap-5">
@@ -62,6 +83,9 @@ const PaymentSection = ({ getTotal, creator }: Props) => {
                 </li>
             </ul>
             <Quote
+                coffee={coffee}
+                plant={plant}
+                book={book}
                 contributor={contributor}
                 getTotal={getTotal}
                 payIn={payIn}

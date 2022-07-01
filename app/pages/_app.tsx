@@ -1,43 +1,54 @@
+// libraries
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import { useEffect, useState } from "react";
-import { connect } from "../utils/connectWallet";
 import { isEqual } from "lodash";
 import { ethers } from "ethers";
+
+// utilities
+import { connect } from "../utils/connectWallet";
 import ContributorContext from "../utils/context/contributor";
 import LoadingContext from "../utils/context/loading";
 import { fetchContributorDetails } from "../utils/type_functions";
 import { Contributor } from "../utils/types";
 
 function MyApp({ Component, pageProps }: AppProps) {
-    const [signer, setSigner] = useState<ethers.Signer | null>(null);
+    // states
     const [contributor, setContributor] = useState<Contributor | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
+
+    // handlers
     const handleUpdateSigner = async (
-        signer_: ethers.Signer | null
+        signer: ethers.Signer | null
     ): Promise<void> => {
-        if (!isEqual(signer, signer_)) {
-            setSigner(signer_);
-            if (signer_) {
-                const address_ = await signer_.getAddress();
-                const chainId_ = await signer_.getChainId();
-                if (address_ && chainId_) {
-                    fetchContributorDetails(signer_, address_, chainId_)
-                        .then((contributor_) => {
-                            if (contributor_) {
-                                setContributor(contributor_);
-                            }
-                        })
-                        .catch((e) => {
-                            console.log(e);
-                        });
-                }
+        if (signer) {
+            if (!contributor) {
+                handleUpdateContributor(signer);
             } else {
-                setContributor(null);
+                if (!isEqual(contributor.signer, signer)) {
+                    handleUpdateContributor(signer);
+                }
             }
+        } else {
+            contributor && setContributor(null);
         }
     };
 
+    const handleUpdateContributor = async (signer: ethers.Signer) => {
+        const address_ = await signer.getAddress();
+        const chainId_ = await signer.getChainId();
+        if (address_ && chainId_) {
+            fetchContributorDetails(signer, address_, chainId_)
+                .then((contributor_) => {
+                    setContributor(contributor_);
+                })
+                .catch((e) => {
+                    console.log(e);
+                });
+        }
+    };
+
+    // effects
     useEffect(() => {
         const _connect = async () => {
             const _signer = await connect(handleUpdateSigner);

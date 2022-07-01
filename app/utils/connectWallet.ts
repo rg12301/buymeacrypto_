@@ -32,8 +32,6 @@ export async function connect(
         // Subscribe to provider connection
         connection.on("connect", async (info: { chainId: number }) => {
             console.log(info);
-            const signer = provider.getSigner();
-            await cb(signer);
         });
 
         // Subscribe to provider disconnection
@@ -41,7 +39,6 @@ export async function connect(
             "disconnect",
             async (error: { code: number; message: string }) => {
                 console.log(error);
-                await cb(null);
             }
         );
         return provider.getSigner();

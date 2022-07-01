@@ -7,7 +7,6 @@ export default async function send(
     amount: string,
     to: string
 ) {
-    console.log(signer, contract, amount, to);
     try {
         if (contract == "native") {
             let tx = {

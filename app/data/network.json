@@ -7,17 +7,30 @@
         "blockExplorerURL": "https://mumbai.polygonscan.com/",
         "currencies": {
             "MATIC": {
-                "name": "Test Polygon Matic",
+                "name": "Matic Token",
                 "symbol": "MATIC",
                 "contractAddress": "native",
                 "logo": "/polygon.svg"
             },
+            "fUSDC": {
+                "name": "fUSDC Fake Token",
+                "symbol": "fUSDC",
+                "contractAddress": "0xbe49ac1eadac65dccf204d4df81d650b50122ab2",
+                "logo": "/usdc.svg"
+            },
             "MATICx": {
-                "name": "Test Polygon Maticx",
+                "name": "Super MATIC",
                 "symbol": "MATICx",
                 "contractAddress": "0x96B82B65ACF7072eFEb00502F45757F254c2a0D4",
-                "logo": "",
+                "logo": "/polygon.svg",
                 "super": "MATIC"
+            },
+            "fUSDCx": {
+                "name": "fTUSD Fake Token",
+                "symbol": "fUSDCx",
+                "contractAddress": "0x42bb40bF79730451B11f6De1CbA222F17b87Afd7",
+                "logo": "/usdc.svg",
+                "super": "fUSDC"
             }
         }
     },
@@ -35,13 +48,13 @@
                 "logo": "/ether.png"
             },
             "USDC": {
-                "name": "USDC",
+                "name": "USD Coin",
                 "symbol": "USDC",
                 "contractAddress": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
                 "logo": "/usdc.svg"
             },
             "USDT": {
-                "name": "USDT",
+                "name": "Tether USD",
                 "symbol": "USDT",
                 "contractAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7",
                 "logo": "/usdt.svg"
@@ -56,22 +69,36 @@
         "blockExplorerURL": "https://polygonscan.com/",
         "currencies": {
             "MATIC": {
-                "name": "Polygon Matic",
+                "name": "Matic Token",
                 "symbol": "MATIC",
                 "contractAddress": "native",
                 "logo": "/polygon.svg"
             },
             "USDC": {
-                "name": "USDC",
+                "name": "USD Coin",
                 "symbol": "USDC",
                 "contractAddress": "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
                 "logo": "/usdc.svg"
             },
             "USDT": {
-                "name": "USDT",
+                "name": "(PoS) Tether USD",
                 "symbol": "USDT",
                 "contractAddress": "0xc2132D05D31c914a87C6611C10748AEb04B58e8F",
                 "logo": "/usdt.svg"
+            },
+            "MATICx": {
+                "name": "Super MATIC",
+                "symbol": "MATICx",
+                "contractAddress": "0x3aD736904E9e65189c3000c7DD2c8AC8bB7cD4e3",
+                "logo": "/polygon.svg",
+                "super": "MATIC"
+            },
+            "USDCx": {
+                "name": "Super USD Coin",
+                "symbol": "USDCx",
+                "contractAddress": "0xCAa7349CEA390F89641fe306D93591f87595dc1F",
+                "logo": "/usdc.svg",
+                "super": "USDC"
             }
         }
     }

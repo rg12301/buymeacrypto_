@@ -1,7 +1,12 @@
+// libraries
 import { NextRouter } from "next/router";
 import React, { ChangeEvent, SetStateAction, useEffect, useState } from "react";
+
+// utilities
 import { useLoadingContext } from "../utils/context/loading";
 import { Creator } from "../utils/types";
+
+// data
 import default_creator from "../data/default_creator.json";
 import CreatorProfile from "./CreatorProfile";
 import PaymentSection from "./PaymentSection";
@@ -9,12 +14,16 @@ import PaymentSection from "./PaymentSection";
 type Props = { router: NextRouter };
 
 const RightPane = ({ router }: Props) => {
+    // contexts
     const { loading, setLoading } = useLoadingContext();
+
+    // states
     const [coffee, setCoffee] = useState("1");
     const [book, setBook] = useState("1");
     const [plant, setPlant] = useState("1");
     const [creator, setCreator] = useState<Creator>(default_creator);
 
+    // handlers
     const getTotal = (amount = false) => {
         if (amount) {
             return Number(coffee) * 5 + Number(plant) * 10 + Number(book) * 15;
@@ -72,6 +81,7 @@ const RightPane = ({ router }: Props) => {
         setLoading(false);
     };
 
+    // effects
     useEffect(() => {
         if (router.isReady) {
             handleQueryUpdate();
@@ -210,6 +220,9 @@ const RightPane = ({ router }: Props) => {
                                 </ul>
                             </div>
                             <PaymentSection
+                                coffee={coffee}
+                                plant={plant}
+                                book={book}
                                 getTotal={getTotal}
                                 creator={creator}
                             />

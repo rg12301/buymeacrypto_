@@ -1,7 +1,9 @@
+// libraries
 import React from "react";
 import makeBlockie from "ethereum-blockies-base64";
 import Link from "next/link";
-import { useContributorContext } from "../utils/context/contributor";
+
+// utilities
 import { Creator } from "../utils/types";
 
 type Props = {

@@ -4,8 +4,13 @@ import {
     Chains,
     Contributor,
     Ethereum,
+    EthereumCurrencies,
     Mumbai,
+    MumbaiCurrencies,
+    MumbaiSuperCurrencies,
     Polygon,
+    PolygonCurrencies,
+    PolygonSuperCurrencies,
     Token,
     UDResponse,
     UDResponseResolved,
@@ -39,18 +44,16 @@ export async function fetchContributorDetails(
                 Object.keys(network[Chains.ETHEREUM].currencies).forEach(
                     (currency) => {
                         if (
-                            currency == "USDC" ||
-                            currency == "USDT" ||
-                            currency == "ETH"
+                            Object.keys(EthereumCurrencies).includes(currency)
                         ) {
                             currencies = {
                                 ...currencies,
                                 [currency]: {
                                     ...network[Chains.ETHEREUM].currencies[
-                                        currency
+                                        currency as EthereumCurrencies
                                     ],
                                     balance: 0,
-                                    quote: 0,
+                                    quote_rate: 1,
                                 },
                             };
                             contributor = {
@@ -72,18 +75,21 @@ export async function fetchContributorDetails(
                 Object.keys(network[Chains.POLYGON].currencies).forEach(
                     (currency) => {
                         if (
-                            currency == "USDC" ||
-                            currency == "USDT" ||
-                            currency == "MATIC"
+                            Object.keys(PolygonCurrencies).includes(currency) ||
+                            Object.keys(PolygonSuperCurrencies).includes(
+                                currency
+                            )
                         ) {
                             currencies = {
                                 ...currencies,
                                 [currency]: {
                                     ...network[Chains.POLYGON].currencies[
-                                        currency
+                                        currency as
+                                            | PolygonCurrencies
+                                            | PolygonSuperCurrencies
                                     ],
                                     balance: 0,
-                                    quote: 0,
+                                    quote_rate: 1,
                                 },
                             };
                             contributor = {
@@ -104,15 +110,22 @@ export async function fetchContributorDetails(
                 let currencies: Mumbai["currencies"];
                 Object.keys(network[Chains.MUMBAI].currencies).forEach(
                     (currency) => {
-                        if (currency == "MATIC" || currency == "MATICx") {
+                        if (
+                            Object.keys(MumbaiCurrencies).includes(currency) ||
+                            Object.keys(MumbaiSuperCurrencies).includes(
+                                currency
+                            )
+                        ) {
                             currencies = {
                                 ...currencies,
                                 [currency]: {
                                     ...network[Chains.MUMBAI].currencies[
-                                        currency
+                                        currency as
+                                            | MumbaiCurrencies
+                                            | MumbaiSuperCurrencies
                                     ],
                                     balance: 0,
-                                    quote_rate: 0,
+                                    quote_rate: 1,
                                 },
                             };
                             contributor = {
@@ -166,7 +179,7 @@ export async function updateContributorBalances(contributor: Contributor) {
                             balance: ethers.utils.formatUnits(
                                 token.balance ? token.balance : 0
                             ),
-                            quote_rate: token.quote_rate,
+                            quote_rate: token.quote_rate ? token.quote_rate : 1,
                         },
                     };
                 }
@@ -175,9 +188,34 @@ export async function updateContributorBalances(contributor: Contributor) {
     }
     Object.values(contributor.network.currencies).forEach((currency) => {
         if (currency.super) {
+            // @ts-ignore
             contributor.network.currencies[currency.symbol].quote_rate =
-                contributor.network.currencies[currency.super].quote_rate;
+                // @ts-ignore
+                contributor.network.currencies[currency.super].quote_rate || 1;
         }
     });
     return contributor;
+}
+
+export function getDefaultCurrency(
+    continuousPayment: boolean,
+    chainId: Chains
+):
+    | PolygonCurrencies
+    | PolygonSuperCurrencies
+    | EthereumCurrencies
+    | MumbaiCurrencies
+    | MumbaiSuperCurrencies {
+    switch (chainId) {
+        case Chains.POLYGON:
+            return continuousPayment
+                ? PolygonCurrencies.MATIC
+                : PolygonSuperCurrencies.MATICx;
+        case Chains.ETHEREUM:
+            return EthereumCurrencies.ETH;
+        case Chains.MUMBAI:
+            return continuousPayment
+                ? MumbaiCurrencies.MATIC
+                : MumbaiSuperCurrencies.MATICx;
+    }
 }

@@ -1,15 +1,21 @@
+// libraries
 import makeBlockie from "ethereum-blockies-base64";
 import { useTypewriter } from "react-simple-typewriter";
 import React, { useState } from "react";
-import { useContributorContext } from "../utils/context/contributor";
 import { ethers } from "ethers";
 import router from "next/router";
+
+// utilities
+import { useContributorContext } from "../utils/context/contributor";
 import { UDResponseResolved, Creator } from "../utils/types";
 import { useLoadingContext } from "../utils/context/loading";
 
 const LeftPane = () => {
+    // contexts
     const { contributor, handleUpdateSigner } = useContributorContext();
     const { setLoading } = useLoadingContext();
+
+    // utility
     const { text, count } = useTypewriter({
         words: ["coffee", "book", "plant"],
         loop: 0,
@@ -18,11 +24,13 @@ const LeftPane = () => {
         deleteSpeed: 100,
     });
 
+    // states
     const [searchUD, setSearchUD] = useState(false);
     const [searchValid, setSearchValid] = useState(false);
     const [search, setSearch] = useState("");
     const [UDDomainResolvedResult, setUDDomainResolvedResult] =
         useState<UDResponseResolved | null>(null);
+
     return (
         <div className="relative mx-16 flex h-full flex-col items-center justify-center gap-20">
             {contributor && (
@@ -50,29 +58,40 @@ const LeftPane = () => {
                         <ul className="flex justify-start gap-5">
                             {Object.values(contributor.network.currencies).map(
                                 (coin) => {
-                                    return (
-                                        <li
-                                            className="flex items-center gap-1"
-                                            key={coin.contractAddress}
-                                        >
-                                            <img
-                                                src={
-                                                    coin.logo
-                                                        ? coin.logo
-                                                        : makeBlockie(
-                                                              coin.contractAddress
-                                                          )
-                                                }
-                                                className="h-5 w-5 rounded-full"
-                                                alt={coin.name}
-                                            />
-                                            <span>
-                                                {coin.balance
-                                                    .toString()
-                                                    .substring(0, 4)}
-                                            </span>
-                                        </li>
-                                    );
+                                    if (coin.balance > 0)
+                                        return (
+                                            <li
+                                                className="flex items-center gap-1"
+                                                key={coin.symbol}
+                                            >
+                                                <div className="relative">
+                                                    <img
+                                                        src={
+                                                            coin.logo
+                                                                ? coin.logo
+                                                                : makeBlockie(
+                                                                      coin.contractAddress
+                                                                  )
+                                                        }
+                                                        alt={coin.name}
+                                                        className="h-5 w-5 rounded-full"
+                                                    />
+                                                    {coin.super && (
+                                                        <div
+                                                            className={`absolute -bottom-0.5 -right-0.5 flex h-3 w-3 items-center justify-center overflow-hidden rounded-full bg-white`}
+                                                        >
+                                                            <img src="/superfluid-finance.svg" />
+                                                        </div>
+                                                    )}
+                                                </div>
+
+                                                <span>
+                                                    {coin.balance
+                                                        .toString()
+                                                        .substring(0, 4)}
+                                                </span>
+                                            </li>
+                                        );
                                 }
                             )}
                         </ul>
@@ -170,7 +189,6 @@ const LeftPane = () => {
                             : {
                                   wallet: search,
                               };
-                        console.log(_creator);
                         setLoading(true);
                         await router.push(`/`, {
                             query: {
