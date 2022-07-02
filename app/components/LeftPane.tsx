@@ -32,11 +32,11 @@ const LeftPane = () => {
         useState<UDResponseResolved | null>(null);
 
     return (
-        <div className="relative mx-16 flex h-full flex-col items-center justify-center gap-20">
+        <div className="relative flex h-full flex-col items-center justify-center gap-20 px-16 shadow-xl">
             {contributor && (
-                <div className="group absolute top-5 flex gap-5 py-3 px-6 opacity-20 transition-transform ease-in-out hover:opacity-100">
+                <div className="absolute top-5 flex gap-5 py-3 px-6">
                     <div
-                        className="h-14 w-14 cursor-pointer overflow-hidden rounded transition-transform ease-in-out group-hover:scale-110 group-hover:shadow-xl"
+                        className="h-14 w-14 cursor-pointer overflow-hidden rounded transition-transform ease-in-out hover:scale-110 hover:shadow-lg"
                         onClick={() => {
                             handleUpdateSigner(null);
                         }}
