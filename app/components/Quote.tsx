@@ -142,7 +142,7 @@ const Quote = ({
     const handleInsufficientBalance = () => {
         const payableAmount = getTotal(true) / (validCurrency?.quote_rate || 1);
         const balance = validCurrency?.balance || 0;
-        if (balance > payableAmount) {
+        if (balance >= payableAmount) {
             setSufficientBalance(true);
         } else {
             setSufficientBalance(false);
