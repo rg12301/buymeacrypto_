@@ -61,23 +61,32 @@ const RightPane = ({ router }: Props) => {
     };
 
     const handleQueryUpdate = () => {
-        const creator_from_url = router.query.creator;
-        const coffee_from_url = router.query.coffee;
-        const plant_from_url = router.query.plant;
-        const book_from_url = router.query.book;
-        if (typeof creator_from_url == "string" && creator_from_url) {
-            const _creator = JSON.parse(creator_from_url) as Creator;
-            setCreator(_creator);
+        if (router.query) {
+            const creator_from_url = router.query.creator;
+            const coffee_from_url = router.query.coffee || "0";
+            const plant_from_url = router.query.plant || "0";
+            const book_from_url = router.query.book || "0";
+            if (creator_from_url && typeof creator_from_url == "string") {
+                const _creator = JSON.parse(creator_from_url) as Creator;
+                setCreator(_creator);
+            }
+            if (
+                (coffee_from_url || plant_from_url || book_from_url) &&
+                Number(coffee_from_url) +
+                    Number(plant_from_url) +
+                    Number(book_from_url)
+            ) {
+                console.log(
+                    Number(coffee_from_url) +
+                        Number(plant_from_url) +
+                        Number(book_from_url)
+                );
+                typeof coffee_from_url == "string" &&
+                    setCoffee(coffee_from_url);
+                typeof plant_from_url == "string" && setPlant(plant_from_url);
+                typeof book_from_url == "string" && setBook(book_from_url);
+            }
         }
-        typeof coffee_from_url == "string" &&
-            coffee_from_url &&
-            setCoffee(coffee_from_url);
-        typeof plant_from_url == "string" &&
-            plant_from_url &&
-            setPlant(plant_from_url);
-        typeof book_from_url == "string" &&
-            book_from_url &&
-            setBook(book_from_url);
         setLoading(false);
     };
 
