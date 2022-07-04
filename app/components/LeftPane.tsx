@@ -86,9 +86,9 @@ const LeftPane = () => {
                                                 </div>
 
                                                 <span>
-                                                    {coin.balance
-                                                        .toString()
-                                                        .substring(0, 4)}
+                                                    {Number(coin.balance)
+                                                        .toFixed(2)
+                                                        .toString()}
                                                 </span>
                                             </li>
                                         );

@@ -247,14 +247,14 @@ const Quote = ({
                     <p className="flex items-center justify-between gap-10 text-sm">
                         <span>{`${payIn}/USD`}</span>
                         <span className="font-semibold">
-                            {validCurrency?.quote_rate
-                                .toString()
-                                .substring(0, 6) || "na"}
+                            {validCurrency?.quote_rate.toFixed(3) || "na"}
                         </span>
                     </p>
                     <p className="flex items-center justify-between gap-10 text-sm">
                         <span>{`Amount to be paid in USD`}</span>
-                        <span className="font-semibold">{getTotal(true)}</span>
+                        <span className="font-semibold">
+                            {getTotal(true).toFixed(2)}
+                        </span>
                     </p>
                     <p className="flex items-center justify-between gap-10 text-sm">
                         <span>{`Amount to be paid in ${payIn}${
@@ -270,9 +270,7 @@ const Quote = ({
                     <p className="flex items-center justify-between gap-10 text-sm">
                         <span>{`Your ${payIn} balance`}</span>
                         <span className="font-semibold">
-                            {validCurrency?.balance
-                                .toString()
-                                .substring(0, 6) || "na"}
+                            {Number(validCurrency?.balance).toFixed(3) || "na"}
                         </span>
                     </p>
                 </div>
