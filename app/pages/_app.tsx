@@ -41,6 +41,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             fetchContributorDetails(signer, address_, chainId_)
                 .then((contributor_) => {
                     setContributor(contributor_);
+                    console.log("contributor updated");
                 })
                 .catch((e) => {
                     console.log(e);

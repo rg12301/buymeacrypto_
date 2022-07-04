@@ -39,7 +39,7 @@ const PaymentSection = ({ coffee, plant, book, getTotal, creator }: Props) => {
     >(PolygonCurrencies.MATIC);
 
     return contributor ? (
-        <div className="flex w-full flex-col justify-center gap-5">
+        <div className="mt-5 flex w-full flex-col justify-center gap-5">
             <ul className="flex border-b border-gray-100">
                 <li className="flex-1">
                     <div

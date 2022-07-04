@@ -209,13 +209,13 @@ export function getDefaultCurrency(
     switch (chainId) {
         case Chains.POLYGON:
             return continuousPayment
-                ? PolygonCurrencies.MATIC
-                : PolygonSuperCurrencies.MATICx;
+                ? PolygonSuperCurrencies.MATICx
+                : PolygonCurrencies.MATIC;
         case Chains.ETHEREUM:
             return EthereumCurrencies.ETH;
         case Chains.MUMBAI:
             return continuousPayment
-                ? MumbaiCurrencies.MATIC
-                : MumbaiSuperCurrencies.MATICx;
+                ? PolygonSuperCurrencies.MATICx
+                : PolygonCurrencies.MATIC;
     }
 }
