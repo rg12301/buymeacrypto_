@@ -161,6 +161,8 @@ const LeftPane = () => {
                                 } else {
                                     setSearchValid(false);
                                 }
+                            } else {
+                                setSearchValid(false);
                             }
                         }}
                     />
