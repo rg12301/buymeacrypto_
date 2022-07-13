@@ -16,8 +16,36 @@ import {
     UDResponseResolved,
 } from "./types";
 import network from "../data/network.json";
+import ERC1155ABI from "./ERC1155ABI.json";
 
-export function asUDResponseResolved(res: UDResponse): UDResponseResolved {
+async function linkFromSocialPictureValue(spv: string): Promise<string> {
+    if (spv) {
+        const [chain_id, contract, token_id] = spv.split("/");
+        const [_, contract_address] = contract.split(":");
+
+        const provider = new ethers.providers.JsonRpcProvider(
+            network[chain_id as unknown as Chains].rpcURL
+        );
+
+        const erc1155_contract = new ethers.Contract(
+            contract_address,
+            ERC1155ABI,
+            provider
+        );
+        const metadata_uri = (await erc1155_contract.uri(token_id)).replace(
+            "{id}",
+            token_id
+        );
+
+        const metadata = await (await fetch(metadata_uri)).json();
+        return metadata.image;
+    }
+    return "";
+}
+
+export async function asUDResponseResolved(
+    res: UDResponse
+): Promise<UDResponseResolved> {
     const result: UDResponseResolved = {
         ada: res.records["crypto.ADA.address"],
         blockchain: res.meta.blockchain,
@@ -26,7 +54,13 @@ export function asUDResponseResolved(res: UDResponse): UDResponseResolved {
         ipfs_html_value: formatURL(res.records["ipfs.html.value"]),
         networkId: res.meta.networkId,
         owner: res.meta.owner,
-        social_picture: formatURL(res.records["social.picture.value"]),
+        social_picture:
+            res.records["social.picture.value"] &&
+            formatURL(
+                await linkFromSocialPictureValue(
+                    res.records["social.picture.value"]
+                )
+            ),
     };
     return result;
 }

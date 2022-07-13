@@ -32,7 +32,7 @@ const LeftPane = () => {
         useState<UDResponseResolved | null>(null);
 
     return (
-        <div className="relative flex h-full flex-col items-center justify-center gap-20 px-16 shadow-xl">
+        <div className="relative flex h-full flex-col items-center justify-center gap-20 px-16 shadow-lg">
             {contributor && (
                 <div className="absolute top-5 flex gap-5 py-3 px-6">
                     <div
@@ -99,7 +99,7 @@ const LeftPane = () => {
                 </div>
             )}
 
-            <span className="font-cursive text-4xl tracking-wider">
+            <span className="font-cursive text-4xl font-semibold tracking-wider">
                 buy me a crypto&nbsp;
                 <span
                     className={`${
@@ -108,7 +108,7 @@ const LeftPane = () => {
                             : count % 3 == 1
                             ? "text-violet-700"
                             : "text-green-600"
-                    } font-medium`}
+                    }`}
                 >
                     {text}_
                 </span>
@@ -143,6 +143,7 @@ const LeftPane = () => {
                                         );
                                         const result: UDResponseResolved =
                                             await res.json();
+                                        console.log(result);
                                         setUDDomainResolvedResult(result);
                                         setSearchValid(true);
                                     } catch (error) {
@@ -187,6 +188,9 @@ const LeftPane = () => {
                             ? {
                                   wallet: UDDomainResolvedResult.owner,
                                   ud: UDDomainResolvedResult.domain,
+                                  profile:
+                                      UDDomainResolvedResult.social_picture &&
+                                      UDDomainResolvedResult.social_picture,
                               }
                             : {
                                   wallet: search,

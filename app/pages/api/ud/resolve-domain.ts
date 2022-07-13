@@ -18,7 +18,9 @@ export default async function handler(
             });
             const ud_response = (await response.json()) as UDResponse;
             if (ud_response.meta.owner) {
-                const ud_resolved_response = asUDResponseResolved(ud_response);
+                const ud_resolved_response = await asUDResponseResolved(
+                    ud_response
+                );
                 res.status(200).json(ud_resolved_response);
                 return;
             } else {

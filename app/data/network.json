@@ -3,7 +3,7 @@
         "network": "maticmum",
         "networkName": "Polygon Mumbai Testnet",
         "tokenName": "MATIC",
-        "rpcURL": "https://matic-mumbai.chainstacklabs.com/",
+        "rpcURL": "https://polygontestapi.terminet.io/rpc",
         "blockExplorerURL": "https://mumbai.polygonscan.com/",
         "currencies": {
             "MATIC": {
@@ -43,8 +43,8 @@
         "network": "homestead",
         "networkName": "Ethereum Mainnet",
         "tokenName": "ETH",
-        "rpcURL": "",
-        "blockExplorerURL": "",
+        "rpcURL": "https://rpc.ankr.com/eth",
+        "blockExplorerURL": "https://etherscan.io/",
         "currencies": {
             "ETH": {
                 "name": "Ether",
@@ -70,7 +70,7 @@
         "network": "matic",
         "networkName": "Polygon",
         "tokenName": "MATIC",
-        "rpcURL": "https://rpc-mainnet.maticvigil.com/",
+        "rpcURL": "https://polygon-rpc.com",
         "blockExplorerURL": "https://polygonscan.com/",
         "currencies": {
             "MATIC": {
