@@ -17,28 +17,41 @@ import {
 } from "./types";
 import network from "../data/network.json";
 import ERC1155ABI from "./ERC1155ABI.json";
+import ERC721ABI from "./ERC721ABI.json";
 
 async function linkFromSocialPictureValue(spv: string): Promise<string> {
     if (spv) {
         const [chain_id, contract, token_id] = spv.split("/");
-        const [_, contract_address] = contract.split(":");
+        const [erc, contract_address] = contract.split(":");
 
         const provider = new ethers.providers.JsonRpcProvider(
             network[chain_id as unknown as Chains].rpcURL
         );
 
-        const erc1155_contract = new ethers.Contract(
-            contract_address,
-            ERC1155ABI,
-            provider
-        );
-        const metadata_uri = (await erc1155_contract.uri(token_id)).replace(
-            "{id}",
-            token_id
-        );
-
-        const metadata = await (await fetch(metadata_uri)).json();
-        return metadata.image;
+        if (erc == "erc1155") {
+            const erc1155_contract = new ethers.Contract(
+                contract_address,
+                ERC1155ABI,
+                provider
+            );
+            const metadata_uri = (await erc1155_contract.uri(token_id)).replace(
+                "{id}",
+                token_id
+            );
+            const metadata = await (await fetch(metadata_uri)).json();
+            return metadata.image;
+        } else if (erc == "erc721") {
+            const erc721_contract = new ethers.Contract(
+                contract_address,
+                ERC721ABI,
+                provider
+            );
+            const metadata_uri = (
+                await erc721_contract.tokenURI(token_id)
+            ).replace("{id}", token_id);
+            const metadata = await (await fetch(metadata_uri)).json();
+            return metadata.image;
+        }
     }
     return "";
 }
