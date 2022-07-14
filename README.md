@@ -15,9 +15,8 @@ To get started visit [buymeacrypto.vercel.app](buymeacrypto.vercel.app). To get 
 ### What's next?
 
 - [x] Support for Unstoppable Domains
-- [ ] Interface to create custom links
-- [ ] Event and Transaction notifier in frontend
 - [x] Continuous support to creators using Superfluid's programmable cashflows
-- [ ] Setup a firebase project to store contributions information
+- [ ] Interface to create custom links (include signatures and login with UD for verified profiles)
+- [ ] Event and Transaction notifier in frontend
 - [ ] Support for ENS
 - [ ] Integration with other blockchains like Solana, Near, etc
