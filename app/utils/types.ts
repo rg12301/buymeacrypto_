@@ -38,6 +38,7 @@ export type UDResponseResolved = {
 
 export type Creator = {
     ud?: string;
+    ens?: string;
     wallet: string;
     profile?: string;
     portfolio?: string;
