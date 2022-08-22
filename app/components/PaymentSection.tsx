@@ -127,6 +127,22 @@ const PaymentSection = ({ coffee, plant, book, getTotal, creator }: Props) => {
                         alt="Unstoppable Domains"
                     />
                 </li>
+                <li
+                    className="cursor-pointer transition-transform ease-in-out hover:scale-125"
+                    onClick={async () => {
+                        const _signer = await connect(
+                            handleUpdateSigner,
+                            "sequence"
+                        );
+                        handleUpdateSigner(_signer);
+                    }}
+                >
+                    <img
+                        src="/sequence.svg"
+                        className="h-14 w-14"
+                        alt="Sequence Wallet"
+                    />
+                </li>
             </ul>
         </div>
     );

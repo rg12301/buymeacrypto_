@@ -1,6 +1,6 @@
 import { ethers } from "ethers";
 import Web3Modal from "web3modal";
-
+import { sequence } from "0xsequence";
 import type { IUAuthOptions } from "@uauth/web3modal";
 import UAuthSPA from "@uauth/js";
 import * as UAuthWeb3Modal from "./ud_web3modal";
@@ -22,19 +22,26 @@ const providerOptions = {
 
 export async function connect(
     cb: (signer: ethers.Signer | null) => Promise<void>,
-    wallet: "injected" | "custom-uauth" = "injected"
+    wallet: "injected" | "custom-uauth" | "sequence" = "injected"
 ) {
     const web3Modal = new Web3Modal({ providerOptions });
     // UAuthWeb3Modal.registerWeb3Modal(web3Modal);
     try {
         let connection;
+        let provider: ethers.providers.Web3Provider;
         if (wallet == "custom-uauth") {
             connection = await web3Modal.connectTo(wallet);
+            provider = new ethers.providers.Web3Provider(connection, "any");
+        } else if (wallet == "sequence") {
+            const sequenceWallet = await sequence.initWallet("polygon");
+            await sequenceWallet.connect();
+            const signer = sequenceWallet.getSigner();
+            return signer;
         } else {
             connection = await web3Modal.connect();
+            provider = new ethers.providers.Web3Provider(connection, "any");
         }
 
-        const provider = new ethers.providers.Web3Provider(connection, "any");
         // Subscribe to accounts change
         connection.on("accountsChanged", async (accounts: string[]) => {
             console.log(accounts);
