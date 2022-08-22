@@ -1,18 +1,40 @@
 import { ethers } from "ethers";
 import Web3Modal from "web3modal";
 
+import type { IUAuthOptions } from "@uauth/web3modal";
+import UAuthSPA from "@uauth/js";
+import * as UAuthWeb3Modal from "./ud_web3modal";
+
+export const uauthOptions: IUAuthOptions = {
+    clientID: "d255b85c-ec79-4ea0-a640-b22f3fa159df",
+    redirectUri: "https://buymeacrypto.vercel.app/",
+    scope: "openid wallet",
+};
+
 const providerOptions = {
-    /* See Provider Options Section */
+    "custom-uauth": {
+        display: UAuthWeb3Modal.display,
+        connector: UAuthWeb3Modal.connector,
+        package: UAuthSPA,
+        options: uauthOptions,
+    },
 };
 
 export async function connect(
-    cb: (signer: ethers.Signer | null) => Promise<void>
+    cb: (signer: ethers.Signer | null) => Promise<void>,
+    wallet: "injected" | "custom-uauth" = "injected"
 ) {
-    const web3Modal = new Web3Modal();
+    const web3Modal = new Web3Modal({ providerOptions });
+    // UAuthWeb3Modal.registerWeb3Modal(web3Modal);
     try {
-        const connection = await web3Modal.connect();
-        const provider = new ethers.providers.Web3Provider(connection, "any");
+        let connection;
+        if (wallet == "custom-uauth") {
+            connection = await web3Modal.connectTo(wallet);
+        } else {
+            connection = await web3Modal.connect();
+        }
 
+        const provider = new ethers.providers.Web3Provider(connection, "any");
         // Subscribe to accounts change
         connection.on("accountsChanged", async (accounts: string[]) => {
             console.log(accounts);

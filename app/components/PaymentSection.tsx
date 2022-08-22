@@ -111,7 +111,16 @@ const PaymentSection = ({ coffee, plant, book, getTotal, creator }: Props) => {
                         alt="Metamask"
                     />
                 </li>
-                <li className="cursor-pointer transition-transform ease-in-out hover:scale-125">
+                <li
+                    className="cursor-pointer transition-transform ease-in-out hover:scale-125"
+                    onClick={async () => {
+                        const _signer = await connect(
+                            handleUpdateSigner,
+                            "custom-uauth"
+                        );
+                        handleUpdateSigner(_signer);
+                    }}
+                >
                     <img
                         src="/ud.svg"
                         className="h-14 w-14"

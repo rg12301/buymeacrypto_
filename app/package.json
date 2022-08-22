@@ -11,6 +11,9 @@
   "dependencies": {
     "@superfluid-finance/sdk-core": "^0.4.3",
     "@types/lodash": "^4.14.182",
+    "@uauth/js": "^2.2.0",
+    "@uauth/web3modal": "^2.2.0",
+    "@walletconnect/web3-provider": "^1.8.0",
     "ethereum-blockies-base64": "^1.0.2",
     "ethers": "^5.6.9",
     "next": "12.1.6",
