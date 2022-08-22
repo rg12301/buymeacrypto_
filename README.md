@@ -9,6 +9,18 @@ To get started visit [buymeacrypto.vercel.app](buymeacrypto.vercel.app). To get 
 > "This project is created to strengthen and expand my learnings in web3 domain. I would always love to hear if it is helping you and to what extent. Since I have limited resources so feel free to contribute with code, code review, design, bug reports, advice, documentation, or anything else you can think of. I am a zealous gardener and reader. You can support me by sending a [plant](http://buymeacrypto.vercel.app/?plant=1) or a [book](http://buymeacrypto.vercel.app/?book=1)." ~ **rg12301**
 
 <br>
+
+## Info
+
+- buymeacrypto_
+- [Link to working code repository](https://github.com/rg12301/buymeacrypto_)
+- [Live Demo Link](https://buymeacrypto.vercel.app/)
+- [Video demo]()
+- Person to contact
+  - [Raghav Goyal](mailto:12301raghavgoyal@gmail.com) (Raghav#6141)
+- UD registered email email account - 12301raghavgoyal@@gmail.com
+
+<br>
 <br>
 
 <details>
@@ -17,11 +29,11 @@ To get started visit [buymeacrypto.vercel.app](buymeacrypto.vercel.app). To get 
 
 ### What's next?
 
-- [x] Support for Unstoppable Domains
+- [x] Support for Unstoppable Domains login domain search
 - [x] Continuous support to creators using Superfluid's programmable cashflows
+- [x] Support for ENS
 - [ ] Interface to create custom links (include signatures and login with UD for verified profiles)
 - [ ] Event and Transaction notifier in frontend
-- [ ] Support for ENS
 - [ ] Integration with other blockchains like Solana, Near, etc
 
 </details>
