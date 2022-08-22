@@ -6,10 +6,13 @@ To get started visit [buymeacrypto.vercel.app](buymeacrypto.vercel.app). To get 
 
 <br>
 
-> This project is created to strengthen and expand my leanings in web3 domain. I would always love to hear if it is helping you and since I have limited resources so feel free to contribute with code, code review, design, bug reports, advice, documentation, or anything else you can think of. Apart from that, I am a zealous gardener and reader. You can support me by sending a [plant](http://buymeacrypto.vercel.app/?plant=1) or a [book](http://buymeacrypto.vercel.app/?book=1).
+> "This project is created to strengthen and expand my learnings in web3 domain. I would always love to hear if it is helping you and to what extent. Since I have limited resources so feel free to contribute with code, code review, design, bug reports, advice, documentation, or anything else you can think of. I am a zealous gardener and reader. You can support me by sending a [plant](http://buymeacrypto.vercel.app/?plant=1) or a [book](http://buymeacrypto.vercel.app/?book=1)." ~ **rg12301**
 
 <br>
 <br>
+
+<details>
+<summary>More about the project</summary>
 <br>
 
 ### What's next?
@@ -20,3 +23,5 @@ To get started visit [buymeacrypto.vercel.app](buymeacrypto.vercel.app). To get 
 - [ ] Event and Transaction notifier in frontend
 - [ ] Support for ENS
 - [ ] Integration with other blockchains like Solana, Near, etc
+
+</details>
