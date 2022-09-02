@@ -15,7 +15,7 @@ To get started visit [buymeacrypto.vercel.app](buymeacrypto.vercel.app). To get 
 - buymeacrypto_
 - [Link to working code repository](https://github.com/rg12301/buymeacrypto_)
 - [Live Demo Link](https://buymeacrypto.vercel.app/)
-- [Video demo]()
+- [Video demo](https://youtu.be/F5fWbx7Bguc)
 - Person to contact
   - [Raghav Goyal](mailto:12301raghavgoyal@gmail.com) (Raghav#6141)
 - UD registered email email account - 12301raghavgoyal@@gmail.com
